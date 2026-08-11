@@ -35,7 +35,7 @@ public class Dataset {
     @Column(nullable = false, length = 120)
     private String nom;
 
-    @Column(length = 2000)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false)
