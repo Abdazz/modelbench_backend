@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -82,6 +83,14 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST, "MALFORMED_REQUEST",
                 "La requete est mal formee ou un parametre a un type invalide",
                 requete.getRequestURI()));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiError> traiterIdentifiantsInvalides(BadCredentialsException exception,
+                                                                 HttpServletRequest requete) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiError.de(
+                HttpStatus.UNAUTHORIZED, "AUTHENTICATION_FAILED",
+                "Identifiants invalides", requete.getRequestURI()));
     }
 
     @ExceptionHandler(Exception.class)
