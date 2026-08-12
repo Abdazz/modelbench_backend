@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -112,7 +111,7 @@ class ModeleMLServiceImplTest {
 
         service.supprimer(1L);
 
-        verify(depot, times(1)).delete((ModeleML) any());
+        verify(depot).delete(any(ModeleML.class));
     }
 
     @Test
@@ -124,6 +123,6 @@ class ModeleMLServiceImplTest {
                 .isInstanceOf(ResourceInUseException.class)
                 .hasMessageContaining("5");
 
-        verify(depot, never()).delete((ModeleML) any());
+        verify(depot, never()).delete(any(ModeleML.class));
     }
 }
