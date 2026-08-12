@@ -5,11 +5,16 @@ import com.example.modelbench.entity.Experimentation;
 import com.example.modelbench.entity.ModeleML;
 import com.example.modelbench.entity.enums.FormatDataset;
 import com.example.modelbench.entity.enums.TypeModele;
+import com.example.modelbench.specification.ExperimentationSpecifications;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
@@ -30,6 +35,9 @@ class ExperimentationRepositoryTest {
 
     @Autowired
     private ModeleMLRepository depotModeles;
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     private Dataset dataset;
     private ModeleML modele;
@@ -114,5 +122,21 @@ class ExperimentationRepositoryTest {
             assertThat(experimentation.getDataset().getNom()).isEqualTo("MNIST");
             assertThat(experimentation.getModele().getNom()).isEqualTo("ResNet-50");
         });
+    }
+
+    @Test
+    void chargeLaListePagineeAvecLeDatasetEtLeModeleDejaInitialisesSansAccesSupplementaire() {
+        depot.saveAndFlush(uneExperimentation(0.98));
+
+        entityManager.clear();
+
+        Pageable pagination = PageRequest.of(0, 10);
+        var specification = ExperimentationSpecifications.filtrer(null, null, null, null, null);
+        List<Experimentation> page = depot.findAll(specification, pagination).getContent();
+
+        assertThat(page).hasSize(1);
+        Experimentation experimentation = page.get(0);
+        assertThat(Hibernate.isInitialized(experimentation.getDataset())).isTrue();
+        assertThat(Hibernate.isInitialized(experimentation.getModele())).isTrue();
     }
 }
