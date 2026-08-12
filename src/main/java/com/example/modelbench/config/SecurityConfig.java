@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
@@ -74,9 +75,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain chaineDeFiltres(HttpSecurity http) throws Exception {
+    public SecurityFilterChain chaineDeFiltres(HttpSecurity http, CorsConfigurationSource sourceConfigurationCors) throws Exception {
         http
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(sourceConfigurationCors))
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
