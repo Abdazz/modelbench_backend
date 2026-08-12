@@ -10,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 
@@ -91,6 +94,30 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiError.de(
                 HttpStatus.UNAUTHORIZED, "AUTHENTICATION_FAILED",
                 "Identifiants invalides", requete.getRequestURI()));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiError> traiterRouteInconnue(NoResourceFoundException exception,
+                                                          HttpServletRequest requete) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiError.de(
+                HttpStatus.NOT_FOUND, "RESOURCE_NOT_FOUND",
+                "La ressource demandee est introuvable", requete.getRequestURI()));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiError> traiterMethodeNonAutorisee(HttpRequestMethodNotSupportedException exception,
+                                                                HttpServletRequest requete) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(ApiError.de(
+                HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED",
+                "La methode HTTP n'est pas autorisee pour cette ressource", requete.getRequestURI()));
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ApiError> traiterTypeDeContenuNonSupporte(HttpMediaTypeNotSupportedException exception,
+                                                                     HttpServletRequest requete) {
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(ApiError.de(
+                HttpStatus.UNSUPPORTED_MEDIA_TYPE, "UNSUPPORTED_MEDIA_TYPE",
+                "Le type de contenu de la requete n'est pas pris en charge", requete.getRequestURI()));
     }
 
     @ExceptionHandler(Exception.class)

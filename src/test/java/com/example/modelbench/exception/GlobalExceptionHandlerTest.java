@@ -5,13 +5,17 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotBlank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -52,6 +56,21 @@ class GlobalExceptionHandlerTest {
         @org.springframework.web.bind.annotation.GetMapping("/panne")
         String panne() {
             throw new IllegalStateException("secret interne a ne jamais exposer");
+        }
+
+        @org.springframework.web.bind.annotation.GetMapping("/route-inconnue")
+        String routeInconnue() throws NoResourceFoundException {
+            throw new NoResourceFoundException(HttpMethod.GET, "/test/route-inconnue", "route-inconnue");
+        }
+
+        @org.springframework.web.bind.annotation.GetMapping("/methode-non-autorisee")
+        String methodeNonAutorisee() throws HttpRequestMethodNotSupportedException {
+            throw new HttpRequestMethodNotSupportedException("POST");
+        }
+
+        @org.springframework.web.bind.annotation.GetMapping("/type-non-supporte")
+        String typeNonSupporte() throws HttpMediaTypeNotSupportedException {
+            throw new HttpMediaTypeNotSupportedException("Content-Type non supporte");
         }
     }
 
@@ -115,5 +134,31 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.code").value("INTERNAL_ERROR"))
                 .andExpect(jsonPath("$.message")
                         .value("Une erreur interne est survenue, contactez l'administrateur"));
+    }
+
+    @Test
+    void traduitUneRouteInconnueEn404() throws Exception {
+        mockMvc.perform(get("/test/route-inconnue"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value("RESOURCE_NOT_FOUND"))
+                .andExpect(jsonPath("$.message").value("La ressource demandee est introuvable"));
+    }
+
+    @Test
+    void traduitUneMethodeHttpNonAutoriseeEn405() throws Exception {
+        mockMvc.perform(get("/test/methode-non-autorisee"))
+                .andExpect(status().isMethodNotAllowed())
+                .andExpect(jsonPath("$.code").value("METHOD_NOT_ALLOWED"))
+                .andExpect(jsonPath("$.message")
+                        .value("La methode HTTP n'est pas autorisee pour cette ressource"));
+    }
+
+    @Test
+    void traduitUnTypeDeContenuNonSupporteEn415() throws Exception {
+        mockMvc.perform(get("/test/type-non-supporte"))
+                .andExpect(status().isUnsupportedMediaType())
+                .andExpect(jsonPath("$.code").value("UNSUPPORTED_MEDIA_TYPE"))
+                .andExpect(jsonPath("$.message")
+                        .value("Le type de contenu de la requete n'est pas pris en charge"));
     }
 }
