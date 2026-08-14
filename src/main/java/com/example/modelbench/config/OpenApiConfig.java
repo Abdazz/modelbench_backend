@@ -30,7 +30,7 @@ public class OpenApiConfig {
 
                                 Comptes de demonstration : admin / admin123 (lecture et ecriture), \
                                 chercheur / chercheur123 (lecture seule).""")
-                        .contact(new Contact().name("Binome ModelBench"))
+                        .contact(new Contact().name("ModelBench"))
                         .license(new License().name("Usage academique")))
                 .components(new Components().addSecuritySchemes(SCHEMA_BEARER,
                         new SecurityScheme()

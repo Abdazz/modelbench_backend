@@ -116,7 +116,7 @@ public class DataSeeder implements CommandLineRunner {
                 modele("ACP", TypeModele.REDUCTION_DIMENSION, "Analyse en composantes principales",
                         "1.0")));
 
-        // Graine fixe : le jeu de demonstration est identique a chaque installation, ce qui rend
+        // Le jeu de demonstration est identique a chaque installation, ce qui rend
         // les captures d'ecran et la demonstration reproductibles.
         Random tirage = new Random(20260811L);
         List<Experimentation> experimentations = new ArrayList<>();
