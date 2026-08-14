@@ -72,10 +72,10 @@ public class ModeleMLController {
     @PostMapping
     @Operation(summary = "Creer un modele")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Modele cree"),
+            @ApiResponse(responseCode = "201", description = "Modele créé"),
             @ApiResponse(responseCode = "400", description = "Donnees invalides",
                     content = @Content(schema = @Schema(implementation = ApiError.class))),
-            @ApiResponse(responseCode = "409", description = "Couple nom et version deja utilise",
+            @ApiResponse(responseCode = "409", description = "Couple nom et version deja utilisé",
                     content = @Content(schema = @Schema(implementation = ApiError.class)))
     })
     public ResponseEntity<ModeleMLResponse> creer(@Valid @RequestBody ModeleMLRequest requete) {

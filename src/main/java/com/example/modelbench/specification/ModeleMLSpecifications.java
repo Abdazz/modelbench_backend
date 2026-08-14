@@ -17,7 +17,7 @@ public final class ModeleMLSpecifications {
     }
 
     /**
-     * @param recherche fragment cherche dans le nom ou l'algorithme, insensible a la casse
+     * @param recherche fragment cherché dans le nom ou l'algorithme, insensible a la casse
      * @param type      famille de tache exacte attendue
      */
     public static Specification<ModeleML> filtrer(String recherche, TypeModele type) {

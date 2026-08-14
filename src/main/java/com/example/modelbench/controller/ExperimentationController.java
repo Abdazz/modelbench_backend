@@ -115,7 +115,7 @@ public class ExperimentationController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Supprimer une experimentation")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Experimentation supprimee"),
+            @ApiResponse(responseCode = "204", description = "Experimentation supprimée"),
             @ApiResponse(responseCode = "404", description = "Identifiant inconnu",
                     content = @Content(schema = @Schema(implementation = ApiError.class)))
     })

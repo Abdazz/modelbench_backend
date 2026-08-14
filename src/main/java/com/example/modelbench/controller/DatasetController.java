@@ -43,7 +43,7 @@ public class DatasetController {
 
     @GetMapping
     @Operation(summary = "Lister les datasets",
-            description = "Pagination, tri et filtrage executes en base de donnees")
+            description = "Pagination, tri et filtrage executés en base de donnees")
     @ApiResponse(responseCode = "200", description = "Page de datasets")
     public PageResponse<DatasetResponse> lister(
             @Parameter(description = "Fragment cherche dans le nom ou la source")
