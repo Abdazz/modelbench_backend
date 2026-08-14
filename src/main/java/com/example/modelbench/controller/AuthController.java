@@ -33,8 +33,8 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Se connecter et obtenir un jeton",
-            description = "Comptes de demonstration : admin/admin123 (ecriture) "
-                    + "et chercheur/chercheur123 (lecture seule)")
+            description = "Comptes de demonstration : admin@example.com/admin123 (ecriture) "
+                    + "et chercheur@example.com/chercheur123 (lecture seule)")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Jeton delivre"),
             @ApiResponse(responseCode = "400", description = "Champs manquants",

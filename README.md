@@ -7,8 +7,8 @@ Devoir de Master Intelligence Artificielle, Developpement Full-Stack, 2026/2027.
 
 | Login | Mot de passe | Role | Droits |
 |---|---|---|---|
-| `admin` | `admin123` | ADMIN | Lecture et ecriture |
-| `chercheur` | `chercheur123` | CHERCHEUR | Lecture seule |
+| `admin@example.com` | `admin123` | ADMIN | Lecture et ecriture |
+| `chercheur@example.com` | `chercheur123` | CHERCHEUR | Lecture seule |
 
 Swagger reste accessible **sans connexion**.
 
@@ -111,6 +111,6 @@ sont volontaires et devraient etre modifies avant tout deploiement reel :
 | Identifiants PostgreSQL | `postgres` / `postgres`, dans `application-postgres.properties` et `docker-compose.yml` | Fournir via `DB_USER` et `DB_PASSWORD` |
 | Console H2 | Activee sous le profil `h2` | Ne pas utiliser le profil `h2` hors developpement |
 
-Les comptes de demonstration `admin` et `chercheur` sont eux aussi crees avec des mots de passe
-connus, par construction : ils servent a rendre l'application immediatement utilisable par un
-evaluateur.
+Les comptes de demonstration `admin@example.com` et `chercheur@example.com` sont eux aussi crees
+avec des mots de passe connus, par construction : ils servent a rendre l'application immediatement
+utilisable par un evaluateur.

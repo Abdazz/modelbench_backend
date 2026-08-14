@@ -64,12 +64,13 @@ public class DataSeeder implements CommandLineRunner {
             return;
         }
 
-        depotUtilisateurs.save(compte("admin", "admin123", "Administrateur du laboratoire",
-                Role.ADMIN));
-        depotUtilisateurs.save(compte("chercheur", "chercheur123", "Chercheur invite",
-                Role.CHERCHEUR));
+        depotUtilisateurs.save(compte("admin@example.com", "admin123",
+                "Administrateur du laboratoire", Role.ADMIN));
+        depotUtilisateurs.save(compte("chercheur@example.com", "chercheur123",
+                "Chercheur invite", Role.CHERCHEUR));
 
-        JOURNAL.info("Comptes de demonstration crees : admin/admin123 et chercheur/chercheur123");
+        JOURNAL.info("Comptes de demonstration crees : admin@example.com/admin123 et "
+                + "chercheur@example.com/chercheur123");
     }
 
     private Utilisateur compte(String login, String motDePasse, String nomComplet, Role role) {

@@ -28,8 +28,9 @@ public class OpenApiConfig {
                                 Authentification : appeler POST /api/auth/login puis coller le \
                                 jeton renvoye dans le bouton Authorize ci-dessus.
 
-                                Comptes de demonstration : admin / admin123 (lecture et ecriture), \
-                                chercheur / chercheur123 (lecture seule).""")
+                                Comptes de demonstration : admin@example.com / admin123 \
+                                (lecture et ecriture), chercheur@example.com / chercheur123 \
+                                (lecture seule).""")
                         .contact(new Contact().name("ModelBench"))
                         .license(new License().name("Usage academique")))
                 .components(new Components().addSecuritySchemes(SCHEMA_BEARER,

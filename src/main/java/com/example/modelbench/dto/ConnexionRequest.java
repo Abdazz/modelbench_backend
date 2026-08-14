@@ -1,13 +1,15 @@
 package com.example.modelbench.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 @Schema(description = "Identifiants de connexion")
 public record ConnexionRequest(
 
         @NotBlank(message = "Le login est obligatoire")
-        @Schema(example = "admin")
+        @Email(message = "Le login doit etre une adresse email valide")
+        @Schema(example = "admin@example.com")
         String login,
 
         @NotBlank(message = "Le mot de passe est obligatoire")

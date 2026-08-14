@@ -39,8 +39,8 @@ class SecuriteTest {
     @BeforeEach
     void creerLesComptes() {
         depotUtilisateurs.deleteAll();
-        depotUtilisateurs.save(compte("admin", "admin123", Role.ADMIN));
-        depotUtilisateurs.save(compte("chercheur", "chercheur123", Role.CHERCHEUR));
+        depotUtilisateurs.save(compte("admin@example.com", "admin123", Role.ADMIN));
+        depotUtilisateurs.save(compte("chercheur@example.com", "chercheur123", Role.CHERCHEUR));
     }
 
     private Utilisateur compte(String login, String motDePasse, Role role) {
@@ -85,26 +85,39 @@ class SecuriteTest {
     }
 
     @Test
+    void refuseUneConnexionAvecUnLoginQuiNEstPasUneAdresseEmail() throws Exception {
+        String corps = """
+                {"login":"pasunadresse","motDePasse":"admin123"}
+                """;
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(corps))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+    }
+
+    @Test
     void laisseSwaggerEtLeContratOpenApiPublics() throws Exception {
         mockMvc.perform(get("/v3/api-docs")).andExpect(status().isOk());
     }
 
     @Test
     void renvoieUnJetonExploitableApresUneConnexionValide() throws Exception {
-        String jeton = jetonDe("admin", "admin123");
+        String jeton = jetonDe("admin@example.com", "admin123");
 
         assertThat(jeton).isNotBlank();
 
         mockMvc.perform(get("/api/auth/moi").header("Authorization", "Bearer " + jeton))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.login").value("admin"))
+                .andExpect(jsonPath("$.login").value("admin@example.com"))
                 .andExpect(jsonPath("$.roles[0]").value("ADMIN"));
     }
 
     @Test
     void refuseUneConnexionAvecUnMauvaisMotDePasse() throws Exception {
         String corps = """
-                {"login":"admin","motDePasse":"mauvais"}
+                {"login":"admin@example.com","motDePasse":"mauvais"}
                 """;
 
         mockMvc.perform(post("/api/auth/login")
@@ -116,7 +129,7 @@ class SecuriteTest {
 
     @Test
     void autoriseLaLectureAUnChercheur() throws Exception {
-        String jeton = jetonDe("chercheur", "chercheur123");
+        String jeton = jetonDe("chercheur@example.com", "chercheur123");
 
         mockMvc.perform(get("/api/datasets").header("Authorization", "Bearer " + jeton))
                 .andExpect(status().isOk());
@@ -124,7 +137,7 @@ class SecuriteTest {
 
     @Test
     void refuseLEcritureAUnChercheurAvecLeFormatDErreurStandard() throws Exception {
-        String jeton = jetonDe("chercheur", "chercheur123");
+        String jeton = jetonDe("chercheur@example.com", "chercheur123");
 
         mockMvc.perform(post("/api/datasets")
                         .header("Authorization", "Bearer " + jeton)
@@ -136,7 +149,7 @@ class SecuriteTest {
 
     @Test
     void autoriseLEcritureAUnAdministrateur() throws Exception {
-        String jeton = jetonDe("admin", "admin123");
+        String jeton = jetonDe("admin@example.com", "admin123");
 
         mockMvc.perform(post("/api/datasets")
                         .header("Authorization", "Bearer " + jeton)
