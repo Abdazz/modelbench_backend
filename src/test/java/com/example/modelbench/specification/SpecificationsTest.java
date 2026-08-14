@@ -3,11 +3,14 @@ package com.example.modelbench.specification;
 import com.example.modelbench.entity.Dataset;
 import com.example.modelbench.entity.Experimentation;
 import com.example.modelbench.entity.ModeleML;
+import com.example.modelbench.entity.Utilisateur;
 import com.example.modelbench.entity.enums.FormatDataset;
+import com.example.modelbench.entity.enums.Role;
 import com.example.modelbench.entity.enums.TypeModele;
 import com.example.modelbench.repository.DatasetRepository;
 import com.example.modelbench.repository.ExperimentationRepository;
 import com.example.modelbench.repository.ModeleMLRepository;
+import com.example.modelbench.repository.UtilisateurRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ class SpecificationsTest {
 
     @Autowired
     private ExperimentationRepository depotExperimentations;
+
+    @Autowired
+    private UtilisateurRepository depotUtilisateurs;
 
     private Dataset mnist;
     private ModeleML resnet;
@@ -62,6 +68,16 @@ class SpecificationsTest {
         experimentation.setDureeEntrainement(600L);
         experimentation.setDateExecution(LocalDateTime.now().minusDays(2));
         depotExperimentations.saveAndFlush(experimentation);
+    }
+
+    private Utilisateur creerUtilisateur(String nomComplet, String login, Role role, boolean actif) {
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setNomComplet(nomComplet);
+        utilisateur.setLogin(login);
+        utilisateur.setMotDePasse("HACHE_DE_TEST");
+        utilisateur.setRole(role);
+        utilisateur.setActif(actif);
+        return depotUtilisateurs.saveAndFlush(utilisateur);
     }
 
     @BeforeEach
@@ -159,5 +175,61 @@ class SpecificationsTest {
         assertThat(parNomDataset.getTotalElements()).isEqualTo(2);
         assertThat(parNomModele.getTotalElements()).isEqualTo(2);
         assertThat(sansCorrespondance.getTotalElements()).isZero();
+    }
+
+    @Test
+    void filtreLesUtilisateursParRechercheSurLeNomOuLeLogin() {
+        creerUtilisateur("Marie Curie", "marie.curie@example.com", Role.CHERCHEUR, true);
+        creerUtilisateur("Alan Turing", "alan.turing@example.com", Role.ADMIN, true);
+
+        var parNom = depotUtilisateurs.findAll(
+                UtilisateurSpecifications.filtrer("curie", null), PageRequest.of(0, 10));
+        var parLogin = depotUtilisateurs.findAll(
+                UtilisateurSpecifications.filtrer("turing", null), PageRequest.of(0, 10));
+
+        assertThat(parNom.getContent()).extracting(Utilisateur::getNomComplet)
+                .containsExactly("Marie Curie");
+        assertThat(parLogin.getContent()).extracting(Utilisateur::getNomComplet)
+                .containsExactly("Alan Turing");
+    }
+
+    @Test
+    void filtreLesUtilisateursParRole() {
+        creerUtilisateur("Marie Curie", "marie.curie@example.com", Role.CHERCHEUR, true);
+        creerUtilisateur("Alan Turing", "alan.turing@example.com", Role.ADMIN, true);
+
+        var page = depotUtilisateurs.findAll(
+                UtilisateurSpecifications.filtrer(null, Role.ADMIN), PageRequest.of(0, 10));
+
+        assertThat(page.getContent()).extracting(Utilisateur::getNomComplet)
+                .containsExactly("Alan Turing");
+    }
+
+    @Test
+    void detecteUnLoginDejaPrisSansTenirCompteDeLaCasse() {
+        creerUtilisateur("Marie Curie", "marie.curie@example.com", Role.CHERCHEUR, true);
+
+        assertThat(depotUtilisateurs.existsByLoginIgnoreCase("MARIE.CURIE@EXAMPLE.COM")).isTrue();
+        assertThat(depotUtilisateurs.existsByLoginIgnoreCase("libre@example.com")).isFalse();
+    }
+
+    @Test
+    void ignoreLIdentifiantCourantLorsDeLaDetectionDeDoublonDeLogin() {
+        Utilisateur marie = creerUtilisateur(
+                "Marie Curie", "marie.curie@example.com", Role.CHERCHEUR, true);
+
+        assertThat(depotUtilisateurs.existsByLoginIgnoreCaseAndIdNot(
+                "marie.curie@example.com", marie.getId())).isFalse();
+        assertThat(depotUtilisateurs.existsByLoginIgnoreCaseAndIdNot(
+                "marie.curie@example.com", marie.getId() + 1)).isTrue();
+    }
+
+    @Test
+    void compteLesAdministrateursActifs() {
+        creerUtilisateur("Admin Un", "admin1@example.com", Role.ADMIN, true);
+        creerUtilisateur("Admin Deux", "admin2@example.com", Role.ADMIN, false);
+        creerUtilisateur("Chercheur", "chercheur@example.com", Role.CHERCHEUR, true);
+
+        assertThat(depotUtilisateurs.countByRoleAndActifTrue(Role.ADMIN)).isEqualTo(1L);
     }
 }
