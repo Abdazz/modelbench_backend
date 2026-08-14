@@ -11,21 +11,21 @@ import jakarta.validation.constraints.Size;
 public record DatasetRequest(
 
         @NotBlank(message = "Le nom est obligatoire")
-        @Size(min = 2, max = 120, message = "Le nom doit contenir entre 2 et 120 caracteres")
+        @Size(min = 2, max = 120, message = "Le nom doit contenir entre 2 et 120 caractères")
         @Schema(example = "MNIST")
         String nom,
 
-        @Size(max = 2000, message = "La description ne peut depasser 2000 caracteres")
+        @Size(max = 2000, message = "La description ne peut dépasser 2000 caractères")
         @Schema(example = "Chiffres manuscrits en niveaux de gris")
         String description,
 
         @NotBlank(message = "La source est obligatoire")
-        @Size(max = 255, message = "La source ne peut depasser 255 caracteres")
+        @Size(max = 255, message = "La source ne peut dépasser 255 caractères")
         @Schema(example = "Kaggle")
         String source,
 
         @NotNull(message = "Le nombre d'observations est obligatoire")
-        @PositiveOrZero(message = "Le nombre d'observations ne peut etre negatif")
+        @PositiveOrZero(message = "Le nombre d'observations ne peut être négatif")
         @Schema(example = "70000")
         Long nombreObservations,
 

@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 public record ConnexionRequest(
 
         @NotBlank(message = "Le login est obligatoire")
-        @Email(message = "Le login doit etre une adresse email valide")
+        @Email(message = "Le login doit être une adresse email valide")
         @Schema(example = "admin@example.com")
         String login,
 

@@ -25,14 +25,14 @@ public class GestionnaireErreursSecurite implements AuthenticationEntryPoint, Ac
     public void commence(HttpServletRequest requete, HttpServletResponse reponse,
                          AuthenticationException exception) throws IOException {
         ecrire(requete, reponse, HttpStatus.UNAUTHORIZED, "AUTHENTICATION_REQUIRED",
-                "Authentification requise : jeton absent, expire ou invalide");
+                "Authentification requise : jeton absent, expiré ou invalide");
     }
 
     @Override
     public void handle(HttpServletRequest requete, HttpServletResponse reponse,
                        AccessDeniedException exception) throws IOException {
         ecrire(requete, reponse, HttpStatus.FORBIDDEN, "ACCESS_DENIED",
-                "Votre role ne permet pas cette operation");
+                "Votre rôle ne permet pas cette opération");
     }
 
     private void ecrire(HttpServletRequest requete, HttpServletResponse reponse,

@@ -11,26 +11,26 @@ import jakarta.validation.constraints.Size;
 public record UtilisateurCreationRequest(
 
         @NotBlank(message = "Le nom complet est obligatoire")
-        @Size(max = 120, message = "Le nom complet ne peut depasser 120 caracteres")
+        @Size(max = 120, message = "Le nom complet ne peut dépasser 120 caractères")
         @Schema(example = "Marie Curie")
         String nomComplet,
 
         @NotBlank(message = "Le login est obligatoire")
-        @Email(message = "Le login doit etre une adresse email valide")
-        @Size(max = 60, message = "Le login ne peut depasser 60 caracteres")
+        @Email(message = "Le login doit être une adresse email valide")
+        @Size(max = 60, message = "Le login ne peut dépasser 60 caractères")
         @Schema(example = "abdoulazizzorom@example.com")
         String login,
 
         @NotBlank(message = "Le mot de passe est obligatoire")
-        @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caracteres")
+        @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères")
         @Schema(example = "motdepasse123")
         String motDePasse,
 
-        @NotNull(message = "Le role est obligatoire")
+        @NotNull(message = "Le rôle est obligatoire")
         @Schema(example = "CHERCHEUR")
         Role role,
 
-        @NotNull(message = "L'etat actif est obligatoire")
+        @NotNull(message = "L'état actif est obligatoire")
         @Schema(description = "Compte actif des sa creation", example = "true")
         Boolean actif) {
 }

@@ -51,7 +51,7 @@ public class DatasetServiceImpl implements DatasetService {
     public DatasetResponse creer(DatasetRequest requete) {
         if (depot.existsByNomIgnoreCase(requete.nom())) {
             throw new DuplicateResourceException(
-                    "Un dataset nomme %s existe deja".formatted(requete.nom()));
+                    "Un dataset nommé %s existe déjà".formatted(requete.nom()));
         }
 
         return mapper.versReponse(depot.save(mapper.versEntite(requete)));
@@ -64,7 +64,7 @@ public class DatasetServiceImpl implements DatasetService {
 
         if (depot.existsByNomIgnoreCaseAndIdNot(requete.nom(), id)) {
             throw new DuplicateResourceException(
-                    "Un dataset nomme %s existe deja".formatted(requete.nom()));
+                    "Un dataset nommé %s existe déjà".formatted(requete.nom()));
         }
 
         mapper.mettreAJour(dataset, requete);
@@ -79,7 +79,7 @@ public class DatasetServiceImpl implements DatasetService {
         long referencements = depotExperimentations.countByDatasetId(id);
         if (referencements > 0) {
             throw new ResourceInUseException(
-                    "Ce dataset est utilise par %d experimentation(s) et ne peut pas etre supprime"
+                    "Ce dataset est utilisé par %d expérimentation(s) et ne peut pas être supprimé"
                             .formatted(referencements));
         }
 

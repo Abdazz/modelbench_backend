@@ -11,22 +11,22 @@ import jakarta.validation.constraints.Size;
 public record UtilisateurModificationRequest(
 
         @NotBlank(message = "Le nom complet est obligatoire")
-        @Size(max = 120, message = "Le nom complet ne peut depasser 120 caracteres")
+        @Size(max = 120, message = "Le nom complet ne peut dépasser 120 caractères")
         String nomComplet,
 
         @NotBlank(message = "Le login est obligatoire")
-        @Email(message = "Le login doit etre une adresse email valide")
-        @Size(max = 60, message = "Le login ne peut depasser 60 caracteres")
+        @Email(message = "Le login doit être une adresse email valide")
+        @Size(max = 60, message = "Le login ne peut dépasser 60 caractères")
         String login,
 
-        @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caracteres")
+        @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères")
         @Schema(description = "Omettre ce champ ou envoyer null pour conserver le mot de passe actuel")
         String motDePasse,
 
-        @NotNull(message = "Le role est obligatoire")
+        @NotNull(message = "Le rôle est obligatoire")
         Role role,
 
-        @NotNull(message = "L'etat actif est obligatoire")
+        @NotNull(message = "L'état actif est obligatoire")
         @Schema(description = "Compte actif")
         Boolean actif) {
 }

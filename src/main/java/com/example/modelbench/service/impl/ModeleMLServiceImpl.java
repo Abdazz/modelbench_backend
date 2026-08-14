@@ -51,7 +51,7 @@ public class ModeleMLServiceImpl implements ModeleMLService {
     public ModeleMLResponse creer(ModeleMLRequest requete) {
         if (depot.existsByNomIgnoreCaseAndVersion(requete.nom(), requete.version())) {
             throw new DuplicateResourceException(
-                    "Le modele %s en version %s existe deja"
+                    "Le modèle %s en version %s existe déjà"
                             .formatted(requete.nom(), requete.version()));
         }
 
@@ -65,7 +65,7 @@ public class ModeleMLServiceImpl implements ModeleMLService {
 
         if (depot.existsByNomIgnoreCaseAndVersionAndIdNot(requete.nom(), requete.version(), id)) {
             throw new DuplicateResourceException(
-                    "Le modele %s en version %s existe deja"
+                    "Le modèle %s en version %s existe déjà"
                             .formatted(requete.nom(), requete.version()));
         }
 
@@ -81,7 +81,7 @@ public class ModeleMLServiceImpl implements ModeleMLService {
         long referencements = depotExperimentations.countByModeleId(id);
         if (referencements > 0) {
             throw new ResourceInUseException(
-                    "Ce modele est utilise par %d experimentation(s) et ne peut pas etre supprime"
+                    "Ce modèle est utilisé par %d expérimentation(s) et ne peut pas être supprimé"
                             .formatted(referencements));
         }
 
@@ -90,6 +90,6 @@ public class ModeleMLServiceImpl implements ModeleMLService {
 
     private ModeleML chargerOuEchouer(Long id) {
         return depot.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Modele", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Modèle", id));
     }
 }

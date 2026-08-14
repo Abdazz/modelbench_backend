@@ -53,7 +53,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public UtilisateurAdminResponse creer(UtilisateurCreationRequest requete) {
         if (depot.existsByLoginIgnoreCase(requete.login())) {
             throw new DuplicateResourceException(
-                    "Un utilisateur avec l'email %s existe deja".formatted(requete.login()));
+                    "Un utilisateur avec l'email %s existe déjà".formatted(requete.login()));
         }
 
         Utilisateur utilisateur = mapper.versEntite(requete, encodeur.encode(requete.motDePasse()));
@@ -67,11 +67,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
         if (depot.existsByLoginIgnoreCaseAndIdNot(requete.login(), id)) {
             throw new DuplicateResourceException(
-                    "Un utilisateur avec l'email %s existe deja".formatted(requete.login()));
+                    "Un utilisateur avec l'email %s existe déjà".formatted(requete.login()));
         }
 
         if (!requete.actif()) {
-            refuserSiCompteCourant(utilisateur, "desactiver son propre compte");
+            refuserSiCompteCourant(utilisateur, "désactiver son propre compte");
         }
         if (!utilisateur.getLogin().equalsIgnoreCase(requete.login())) {
             refuserSiCompteCourant(utilisateur, "changer son propre email de connexion");
@@ -92,7 +92,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public void supprimer(Long id) {
         Utilisateur utilisateur = chargerOuEchouer(id);
 
-        refuserSiCompteCourant(utilisateur, "se supprimer lui-meme");
+        refuserSiCompteCourant(utilisateur, "se supprimer lui-même");
         refuserSiPerteDuDernierAdministrateurActif(utilisateur, false);
 
         depot.delete(utilisateur);

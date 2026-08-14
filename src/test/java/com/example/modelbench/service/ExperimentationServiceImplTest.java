@@ -103,7 +103,7 @@ class ExperimentationServiceImplTest {
 
         assertThatThrownBy(() -> service.creer(requete))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Modele");
+                .hasMessageContaining("Modèle");
 
         verify(depot, never()).save(any());
     }

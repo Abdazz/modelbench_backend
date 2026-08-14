@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(ApiError.de(
                 HttpStatus.BAD_REQUEST,
                 "VALIDATION_ERROR",
-                "La validation de la requete a echoue",
+                "La validation de la requête a échoué",
                 requete.getRequestURI(),
                 details));
     }
@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ApiError.de(
                 HttpStatus.CONFLICT, "DUPLICATE_RESOURCE",
-                "L'operation viole une contrainte d'unicite ou d'integrite",
+                "L'opération viole une contrainte d'unicité ou d'intégrité",
                 requete.getRequestURI()));
     }
 
@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
                                                             HttpServletRequest requete) {
         return ResponseEntity.badRequest().body(ApiError.de(
                 HttpStatus.BAD_REQUEST, "MALFORMED_REQUEST",
-                "La requete est mal formee ou un parametre a un type invalide",
+                "La requête est mal formée ou un paramètre a un type invalide",
                 requete.getRequestURI()));
     }
 
@@ -101,7 +101,7 @@ public class GlobalExceptionHandler {
                                                           HttpServletRequest requete) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiError.de(
                 HttpStatus.NOT_FOUND, "RESOURCE_NOT_FOUND",
-                "La ressource demandee est introuvable", requete.getRequestURI()));
+                "La ressource demandée est introuvable", requete.getRequestURI()));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -109,7 +109,7 @@ public class GlobalExceptionHandler {
                                                                 HttpServletRequest requete) {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(ApiError.de(
                 HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED",
-                "La methode HTTP n'est pas autorisee pour cette ressource", requete.getRequestURI()));
+                "La méthode HTTP n'est pas autorisée pour cette ressource", requete.getRequestURI()));
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
@@ -117,7 +117,7 @@ public class GlobalExceptionHandler {
                                                                      HttpServletRequest requete) {
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(ApiError.de(
                 HttpStatus.UNSUPPORTED_MEDIA_TYPE, "UNSUPPORTED_MEDIA_TYPE",
-                "Le type de contenu de la requete n'est pas pris en charge", requete.getRequestURI()));
+                "Le type de contenu de la requête n'est pas pris en charge", requete.getRequestURI()));
     }
 
     @ExceptionHandler(Exception.class)

@@ -79,7 +79,7 @@ public class ExperimentationServiceImpl implements ExperimentationService {
 
     private Experimentation chargerOuEchouer(Long id) {
         return depot.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Experimentation", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Expérimentation", id));
     }
 
     /**
@@ -93,6 +93,6 @@ public class ExperimentationServiceImpl implements ExperimentationService {
 
     private ModeleML chargerModele(Long modeleId) {
         return depotModeles.findById(modeleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Modele", modeleId));
+                .orElseThrow(() -> new ResourceNotFoundException("Modèle", modeleId));
     }
 }

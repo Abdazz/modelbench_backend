@@ -141,7 +141,7 @@ class GlobalExceptionHandlerTest {
         mockMvc.perform(get("/test/route-inconnue"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value("RESOURCE_NOT_FOUND"))
-                .andExpect(jsonPath("$.message").value("La ressource demandee est introuvable"));
+                .andExpect(jsonPath("$.message").value("La ressource demandée est introuvable"));
     }
 
     @Test
@@ -150,7 +150,7 @@ class GlobalExceptionHandlerTest {
                 .andExpect(status().isMethodNotAllowed())
                 .andExpect(jsonPath("$.code").value("METHOD_NOT_ALLOWED"))
                 .andExpect(jsonPath("$.message")
-                        .value("La methode HTTP n'est pas autorisee pour cette ressource"));
+                        .value("La méthode HTTP n'est pas autorisée pour cette ressource"));
     }
 
     @Test
@@ -159,6 +159,6 @@ class GlobalExceptionHandlerTest {
                 .andExpect(status().isUnsupportedMediaType())
                 .andExpect(jsonPath("$.code").value("UNSUPPORTED_MEDIA_TYPE"))
                 .andExpect(jsonPath("$.message")
-                        .value("Le type de contenu de la requete n'est pas pris en charge"));
+                        .value("Le type de contenu de la requête n'est pas pris en charge"));
     }
 }

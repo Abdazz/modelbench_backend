@@ -129,7 +129,7 @@ class UtilisateurControllerTest {
 
     @Test
     void renvoie409QuandLaSuppressionEstRefuseeParUnGardeFou() throws Exception {
-        doThrow(new ResourceInUseException("Un administrateur ne peut pas se supprimer lui-meme"))
+        doThrow(new ResourceInUseException("Un administrateur ne peut pas se supprimer lui-même"))
                 .when(service).supprimer(eq(1L));
 
         mockMvc.perform(delete("/api/utilisateurs/1"))
