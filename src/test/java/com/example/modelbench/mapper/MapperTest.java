@@ -6,11 +6,17 @@ import com.example.modelbench.dto.ExperimentationRequest;
 import com.example.modelbench.dto.ExperimentationResponse;
 import com.example.modelbench.dto.ModeleMLRequest;
 import com.example.modelbench.dto.ModeleMLResponse;
+import com.example.modelbench.dto.UtilisateurAdminResponse;
+import com.example.modelbench.dto.UtilisateurCreationRequest;
+import com.example.modelbench.dto.UtilisateurModificationRequest;
 import com.example.modelbench.entity.Dataset;
 import com.example.modelbench.entity.Experimentation;
 import com.example.modelbench.entity.ModeleML;
+import com.example.modelbench.entity.Utilisateur;
 import com.example.modelbench.entity.enums.FormatDataset;
+import com.example.modelbench.entity.enums.Role;
 import com.example.modelbench.entity.enums.TypeModele;
+import com.example.modelbench.mapper.UtilisateurMapper;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -23,6 +29,7 @@ class MapperTest {
     private final DatasetMapper mapperDataset = new DatasetMapper();
     private final ModeleMLMapper mapperModele = new ModeleMLMapper();
     private final ExperimentationMapper mapperExperimentation = new ExperimentationMapper();
+    private final UtilisateurMapper mapperUtilisateur = new UtilisateurMapper();
 
     @Test
     void convertitUneRequeteDatasetEnEntite() {
@@ -132,5 +139,58 @@ class MapperTest {
         assertThat(cible.getModele()).isSameAs(modele);
         assertThat(cible.getAccuracy()).isEqualTo(0.88);
         assertThat(cible.getDateExecution()).isEqualTo(LocalDateTime.of(2026, 6, 1, 9, 0));
+    }
+
+    @Test
+    void convertitUneRequeteDeCreationUtilisateurEnEntiteAvecLeMotDePasseDejaHache() {
+        UtilisateurCreationRequest requete = new UtilisateurCreationRequest(
+                "Marie Curie", "marie.curie@example.com", "motdepasse123", Role.CHERCHEUR, true);
+
+        Utilisateur entite = mapperUtilisateur.versEntite(requete, "HACHE_BCRYPT");
+
+        assertThat(entite.getNomComplet()).isEqualTo("Marie Curie");
+        assertThat(entite.getLogin()).isEqualTo("marie.curie@example.com");
+        assertThat(entite.getMotDePasse()).isEqualTo("HACHE_BCRYPT");
+        assertThat(entite.getRole()).isEqualTo(Role.CHERCHEUR);
+        assertThat(entite.isActif()).isTrue();
+        assertThat(entite.getId()).isNull();
+    }
+
+    @Test
+    void convertitUneEntiteUtilisateurEnReponseAdmin() {
+        Utilisateur entite = new Utilisateur();
+        entite.setId(5L);
+        entite.setLogin("admin@example.com");
+        entite.setNomComplet("Administrateur du laboratoire");
+        entite.setRole(Role.ADMIN);
+        entite.setActif(true);
+
+        UtilisateurAdminResponse reponse = mapperUtilisateur.versReponse(entite);
+
+        assertThat(reponse.id()).isEqualTo(5L);
+        assertThat(reponse.login()).isEqualTo("admin@example.com");
+        assertThat(reponse.role()).isEqualTo(Role.ADMIN);
+        assertThat(reponse.actif()).isTrue();
+    }
+
+    @Test
+    void metAJourUnUtilisateurSansToucherALIdentifiantNiAuMotDePasse() {
+        Utilisateur existant = new Utilisateur();
+        existant.setId(5L);
+        existant.setLogin("ancien@example.com");
+        existant.setMotDePasse("HACHE_INCHANGE");
+        existant.setNomComplet("Ancien nom");
+        existant.setRole(Role.CHERCHEUR);
+        existant.setActif(true);
+
+        mapperUtilisateur.mettreAJour(existant, new UtilisateurModificationRequest(
+                "Nouveau nom", "nouveau@example.com", null, Role.ADMIN, false));
+
+        assertThat(existant.getId()).isEqualTo(5L);
+        assertThat(existant.getMotDePasse()).isEqualTo("HACHE_INCHANGE");
+        assertThat(existant.getNomComplet()).isEqualTo("Nouveau nom");
+        assertThat(existant.getLogin()).isEqualTo("nouveau@example.com");
+        assertThat(existant.getRole()).isEqualTo(Role.ADMIN);
+        assertThat(existant.isActif()).isFalse();
     }
 }
