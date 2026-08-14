@@ -78,6 +78,7 @@ Les tests s'executent sur H2 sous le profil `test` : aucune base externe n'est n
 | `GET /api/modeles`, `GET /api/experimentations` | authentifie | Idem pour les deux autres entites |
 | `GET /api/reference/formats-dataset` | authentifie | Valeurs d'enumeration |
 | `GET /api/statistiques/synthese` | authentifie | Indicateurs du tableau de bord |
+| `GET/POST/PUT/DELETE /api/utilisateurs` | ADMIN, y compris en lecture | Gestion des comptes |
 
 Parametres de pagination communs : `?page=0&size=10&sort=nom,asc`.
 

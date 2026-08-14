@@ -90,6 +90,7 @@ public class SecurityConfig {
                                 "/swagger/**",
                                 "/swagger-ui/**",
                                 "/h2-console/**").permitAll()
+                        .requestMatchers("/api/utilisateurs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")

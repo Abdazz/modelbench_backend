@@ -157,4 +157,21 @@ class SecuriteTest {
                         .content(CORPS_DATASET))
                 .andExpect(status().isCreated());
     }
+
+    @Test
+    void refuseAUnChercheurLAccesALaListeDesUtilisateurs() throws Exception {
+        String jeton = jetonDe("chercheur@example.com", "chercheur123");
+
+        mockMvc.perform(get("/api/utilisateurs").header("Authorization", "Bearer " + jeton))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.code").value("ACCESS_DENIED"));
+    }
+
+    @Test
+    void autoriseUnAdministrateurALAccesALaListeDesUtilisateurs() throws Exception {
+        String jeton = jetonDe("admin@example.com", "admin123");
+
+        mockMvc.perform(get("/api/utilisateurs").header("Authorization", "Bearer " + jeton))
+                .andExpect(status().isOk());
+    }
 }
