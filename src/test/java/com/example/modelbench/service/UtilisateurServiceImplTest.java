@@ -237,4 +237,18 @@ class UtilisateurServiceImplTest {
 
         verify(depot).delete(chercheur);
     }
+
+    @Test
+    void refuseQuUnAdministrateurChangeSonProprePropreLogin() {
+        Utilisateur soi = unUtilisateurPersiste(1L, "admin@example.com", Role.ADMIN, true);
+        connecterEnTantQue("admin@example.com");
+        when(depot.findById(1L)).thenReturn(Optional.of(soi));
+        when(depot.existsByLoginIgnoreCaseAndIdNot("nouveau@example.com", 1L)).thenReturn(false);
+
+        assertThatThrownBy(() -> service.modifier(1L, new UtilisateurModificationRequest(
+                "Administrateur", "nouveau@example.com", null, Role.ADMIN, true)))
+                .isInstanceOf(ResourceInUseException.class);
+
+        verify(depot, never()).save(any(Utilisateur.class));
+    }
 }

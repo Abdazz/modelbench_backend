@@ -87,7 +87,7 @@ public class UtilisateurController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Modifier un utilisateur existant",
-            description = "Laisser motDePasse vide ou absent pour conserver le mot de passe actuel")
+            description = "Omettre motDePasse ou envoyer null pour conserver le mot de passe actuel")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Utilisateur modifie"),
             @ApiResponse(responseCode = "400", description = "Donnees invalides",

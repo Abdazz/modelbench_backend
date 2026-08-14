@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -134,5 +135,33 @@ class UtilisateurControllerTest {
         mockMvc.perform(delete("/api/utilisateurs/1"))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.code").value("RESOURCE_IN_USE"));
+    }
+
+    @Test
+    void renvoie400QuandLeChampActifEstAbsentALaCreation() throws Exception {
+        String corpsSansActif = """
+                {"nomComplet":"Marie Curie","login":"marie.curie@example.com",
+                 "motDePasse":"motdepasse123","role":"CHERCHEUR"}
+                """;
+
+        mockMvc.perform(post("/api/utilisateurs")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(corpsSansActif))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+    }
+
+    @Test
+    void renvoie400QuandLeChampActifEstAbsentALaModification() throws Exception {
+        String corpsSansActif = """
+                {"nomComplet":"Marie Curie","login":"marie.curie@example.com",
+                 "role":"CHERCHEUR"}
+                """;
+
+        mockMvc.perform(put("/api/utilisateurs/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(corpsSansActif))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
     }
 }

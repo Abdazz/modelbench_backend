@@ -22,7 +22,7 @@ class DocumentationApiTest {
     private MockMvc mockMvc;
 
     @Test
-    void publieUnContratOpenApiDecrivantLesSixControleurs() throws Exception {
+    void publieUnContratOpenApiDecrivantLesSeptControleurs() throws Exception {
         mockMvc.perform(get("/v3/api-docs"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.info.title").value("API ModelBench"))

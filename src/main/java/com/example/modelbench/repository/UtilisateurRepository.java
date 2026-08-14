@@ -12,7 +12,7 @@ public interface UtilisateurRepository
 
     Optional<Utilisateur> findByLogin(String login);
 
-    boolean existsByLogin(String login);
+    Optional<Utilisateur> findByLoginIgnoreCase(String login);
 
     boolean existsByLoginIgnoreCase(String login);
 

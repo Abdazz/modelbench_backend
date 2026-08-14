@@ -30,6 +30,7 @@ public record UtilisateurCreationRequest(
         @Schema(example = "CHERCHEUR")
         Role role,
 
+        @NotNull(message = "L'etat actif est obligatoire")
         @Schema(description = "Compte actif des sa creation", example = "true")
-        boolean actif) {
+        Boolean actif) {
 }

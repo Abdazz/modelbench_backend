@@ -14,6 +14,7 @@ import com.example.modelbench.repository.UtilisateurRepository;
 import com.example.modelbench.service.UtilisateurService;
 import com.example.modelbench.specification.UtilisateurSpecifications;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -72,6 +73,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         if (!requete.actif()) {
             refuserSiCompteCourant(utilisateur, "desactiver son propre compte");
         }
+        if (!utilisateur.getLogin().equalsIgnoreCase(requete.login())) {
+            refuserSiCompteCourant(utilisateur, "changer son propre email de connexion");
+        }
         boolean resteAdministrateurActif = requete.role() == Role.ADMIN && requete.actif();
         refuserSiPerteDuDernierAdministrateurActif(utilisateur, resteAdministrateurActif);
 
@@ -95,8 +99,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     private void refuserSiCompteCourant(Utilisateur cible, String action) {
-        String loginCourant = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (cible.getLogin().equalsIgnoreCase(loginCourant)) {
+        Authentication authentification = SecurityContextHolder.getContext().getAuthentication();
+        if (authentification == null) {
+            return;
+        }
+        if (cible.getLogin().equalsIgnoreCase(authentification.getName())) {
             throw new ResourceInUseException("Un administrateur ne peut pas %s".formatted(action));
         }
     }

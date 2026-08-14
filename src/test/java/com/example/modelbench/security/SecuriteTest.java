@@ -174,4 +174,16 @@ class SecuriteTest {
         mockMvc.perform(get("/api/utilisateurs").header("Authorization", "Bearer " + jeton))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void autoriseLaConnexionAvecUneCasseDifferenteDeCelleDuCompte() throws Exception {
+        String corps = """
+                {"login":"ADMIN@EXAMPLE.COM","motDePasse":"admin123"}
+                """;
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(corps))
+                .andExpect(status().isOk());
+    }
 }

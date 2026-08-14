@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ConnexionResponse connecter(ConnexionRequest requete) {
-        Utilisateur utilisateur = depot.findByLogin(requete.login())
+        Utilisateur utilisateur = depot.findByLoginIgnoreCase(requete.login())
                 .orElseThrow(() -> new BadCredentialsException("Identifiants invalides"));
 
         if (!utilisateur.isActif()
@@ -73,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UtilisateurResponse profil(String login) {
-        Utilisateur utilisateur = depot.findByLogin(login)
+        Utilisateur utilisateur = depot.findByLoginIgnoreCase(login)
                 .orElseThrow(() -> new BadCredentialsException("Identifiants invalides"));
 
         return new UtilisateurResponse(utilisateur.getLogin(), utilisateur.getNomComplet(),

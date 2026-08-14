@@ -20,12 +20,13 @@ public record UtilisateurModificationRequest(
         String login,
 
         @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caracteres")
-        @Schema(description = "Laisser vide ou absent pour conserver le mot de passe actuel")
+        @Schema(description = "Omettre ce champ ou envoyer null pour conserver le mot de passe actuel")
         String motDePasse,
 
         @NotNull(message = "Le role est obligatoire")
         Role role,
 
+        @NotNull(message = "L'etat actif est obligatoire")
         @Schema(description = "Compte actif")
-        boolean actif) {
+        Boolean actif) {
 }

@@ -111,6 +111,7 @@ sont volontaires et devraient etre modifies avant tout deploiement reel :
 | Cle de signature JWT | Valeur en clair dans `application.properties` | Fournir via la variable d'environnement `JWT_SECRET` |
 | Identifiants PostgreSQL | `postgres` / `postgres`, dans `application-postgres.properties` et `docker-compose.yml` | Fournir via `DB_USER` et `DB_PASSWORD` |
 | Console H2 | Activee sous le profil `h2` | Ne pas utiliser le profil `h2` hors developpement |
+| Duree de vie des jetons | Un jeton reste valide 8 heures apres son emission, meme si le compte est desactive, retrograde ou supprime entre-temps (aucune verification en base a chaque requete) | Reduire `security.jwt.duree-validite-secondes`, ou mettre en place une liste de revocation, avant un deploiement expose a des utilisateurs non maitrises |
 
 Les comptes de demonstration `admin@example.com` et `chercheur@example.com` sont eux aussi crees
 avec des mots de passe connus, par construction : ils servent a rendre l'application immediatement
