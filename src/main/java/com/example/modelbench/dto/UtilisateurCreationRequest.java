@@ -18,7 +18,7 @@ public record UtilisateurCreationRequest(
         @NotBlank(message = "Le login est obligatoire")
         @Email(message = "Le login doit etre une adresse email valide")
         @Size(max = 60, message = "Le login ne peut depasser 60 caracteres")
-        @Schema(example = "marie.curie@example.com")
+        @Schema(example = "abdoulazizzorom@example.com")
         String login,
 
         @NotBlank(message = "Le mot de passe est obligatoire")

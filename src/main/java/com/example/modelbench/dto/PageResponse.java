@@ -15,7 +15,7 @@ public record PageResponse<T>(
         @Schema(description = "Elements de la page courante")
         List<T> contenu,
 
-        @Schema(description = "Index de la page, commence a zero", example = "0")
+        @Schema(description = "Index de la page, commence à zero", example = "0")
         int page,
 
         @Schema(description = "Nombre d'elements demandes par page", example = "10")

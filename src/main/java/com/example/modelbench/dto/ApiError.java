@@ -21,7 +21,7 @@ public record ApiError(
         @Schema(description = "Code d'erreur applicatif", example = "VALIDATION_ERROR")
         String code,
 
-        @Schema(description = "Message lisible par un humain")
+        @Schema(description = "Message explicite")
         String message,
 
         @Schema(description = "Chemin de la requete en cause", example = "/api/datasets")

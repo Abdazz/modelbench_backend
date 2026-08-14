@@ -46,7 +46,7 @@ public class Experimentation {
     @Column(name = "f1_score", nullable = false)
     private Double f1Score;
 
-    /** Duree d'entrainement exprimee en secondes. */
+    /** Durée d'entrainement exprimée en secondes. */
     @Column(name = "duree_entrainement", nullable = false)
     private Long dureeEntrainement;
 

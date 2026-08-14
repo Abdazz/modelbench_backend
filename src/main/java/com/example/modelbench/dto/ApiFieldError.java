@@ -11,6 +11,6 @@ public record ApiFieldError(
         @Schema(description = "Nom du champ en faute", example = "accuracy")
         String champ,
 
-        @Schema(description = "Raison du rejet", example = "doit etre inferieur ou egal a 1.0")
+        @Schema(description = "Raison du rejet", example = "doit être inferieur ou egal à 1.0")
         String message) {
 }

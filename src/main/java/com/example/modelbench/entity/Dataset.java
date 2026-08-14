@@ -61,8 +61,8 @@ public class Dataset {
     private List<Experimentation> experimentations = new ArrayList<>();
 
     /**
-     * Egalite fondee sur l'identifiant uniquement. Comparer tous les champs, comme le ferait
-     * {@code @Data} de Lombok, declencherait le chargement des collections paresseuses.
+     * Egalité fondée sur l'identifiant uniquement. Comparer tous les champs, comme le ferait
+     * {@code @Data} de Lombok, declencherait le chargement des collections lazy.
      */
     @Override
     public boolean equals(Object autre) {
