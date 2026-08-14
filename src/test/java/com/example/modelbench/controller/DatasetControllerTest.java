@@ -14,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +41,7 @@ class DatasetControllerTest {
 
     private DatasetResponse unDataset() {
         return new DatasetResponse(1L, "MNIST", "Chiffres", "Kaggle", 70000L,
-                FormatDataset.IMAGES, LocalDate.of(2026, 3, 14));
+                FormatDataset.IMAGES, LocalDateTime.of(2026, 3, 14, 9, 30, 0));
     }
 
     private static final String CORPS_VALIDE = """

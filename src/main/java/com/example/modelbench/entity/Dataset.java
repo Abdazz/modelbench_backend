@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +55,7 @@ public class Dataset {
 
     @CreationTimestamp
     @Column(name = "date_ajout", nullable = false, updatable = false)
-    private LocalDate dateAjout;
+    private LocalDateTime dateAjout;
 
     @OneToMany(mappedBy = "dataset", fetch = FetchType.LAZY)
     private List<Experimentation> experimentations = new ArrayList<>();

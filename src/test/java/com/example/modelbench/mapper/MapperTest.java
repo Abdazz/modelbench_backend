@@ -52,13 +52,13 @@ class MapperTest {
         entite.setSource("Kaggle");
         entite.setNombreObservations(891L);
         entite.setFormat(FormatDataset.CSV);
-        entite.setDateAjout(LocalDate.of(2026, 3, 14));
+        entite.setDateAjout(LocalDateTime.of(2026, 3, 14, 9, 30, 0));
 
         DatasetResponse reponse = mapperDataset.versReponse(entite);
 
         assertThat(reponse.id()).isEqualTo(7L);
         assertThat(reponse.nom()).isEqualTo("Titanic");
-        assertThat(reponse.dateAjout()).isEqualTo(LocalDate.of(2026, 3, 14));
+        assertThat(reponse.dateAjout()).isEqualTo(LocalDateTime.of(2026, 3, 14, 9, 30, 0));
     }
 
     @Test
@@ -69,13 +69,13 @@ class MapperTest {
         existant.setSource("Ancienne source");
         existant.setNombreObservations(1L);
         existant.setFormat(FormatDataset.CSV);
-        existant.setDateAjout(LocalDate.of(2026, 1, 1));
+        existant.setDateAjout(LocalDateTime.of(2026, 1, 1, 8, 0, 0));
 
         mapperDataset.mettreAJour(existant, new DatasetRequest(
                 "Nouveau nom", "Description", "UCI", 500L, FormatDataset.JSON));
 
         assertThat(existant.getId()).isEqualTo(7L);
-        assertThat(existant.getDateAjout()).isEqualTo(LocalDate.of(2026, 1, 1));
+        assertThat(existant.getDateAjout()).isEqualTo(LocalDateTime.of(2026, 1, 1, 8, 0, 0));
         assertThat(existant.getNom()).isEqualTo("Nouveau nom");
         assertThat(existant.getFormat()).isEqualTo(FormatDataset.JSON);
     }
