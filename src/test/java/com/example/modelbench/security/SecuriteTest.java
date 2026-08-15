@@ -186,4 +186,22 @@ class SecuriteTest {
                         .content(corps))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void refuseUnTriMalformeAvecLeFormatDErreurStandard() throws Exception {
+        String jeton = jetonDe("admin@example.com", "admin123");
+
+        mockMvc.perform(get("/api/modeles?sort=%5B%22id%22%5D").header("Authorization", "Bearer " + jeton))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("MALFORMED_REQUEST"));
+    }
+
+    @Test
+    void refuseUnTriSurUneProprieteInexistanteAvecLeFormatDErreurStandard() throws Exception {
+        String jeton = jetonDe("admin@example.com", "admin123");
+
+        mockMvc.perform(get("/api/modeles?sort=proprieteInexistante,asc").header("Authorization", "Bearer " + jeton))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("MALFORMED_REQUEST"));
+    }
 }
