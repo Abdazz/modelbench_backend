@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -53,7 +53,7 @@ public class ModeleML {
 
     @CreationTimestamp
     @Column(name = "date_creation", nullable = false, updatable = false)
-    private LocalDate dateCreation;
+    private LocalDateTime dateCreation;
 
     @OneToMany(mappedBy = "modele", fetch = FetchType.LAZY)
     private List<Experimentation> experimentations = new ArrayList<>();

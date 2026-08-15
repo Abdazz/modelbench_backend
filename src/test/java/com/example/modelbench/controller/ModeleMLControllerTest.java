@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -38,7 +38,7 @@ class ModeleMLControllerTest {
 
     private ModeleMLResponse unModele() {
         return new ModeleMLResponse(1L, "ResNet-50", TypeModele.VISION, "CNN", "1.0",
-                LocalDate.of(2026, 2, 2));
+                LocalDateTime.of(2026, 2, 2, 10, 0, 0));
     }
 
     @Test

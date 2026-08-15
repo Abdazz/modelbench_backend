@@ -19,7 +19,6 @@ import com.example.modelbench.entity.enums.TypeModele;
 import com.example.modelbench.mapper.UtilisateurMapper;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -85,7 +84,7 @@ class MapperTest {
         ModeleML entite = mapperModele.versEntite(new ModeleMLRequest(
                 "ResNet-50", TypeModele.VISION, "CNN", "1.2"));
         entite.setId(3L);
-        entite.setDateCreation(LocalDate.of(2026, 2, 2));
+        entite.setDateCreation(LocalDateTime.of(2026, 2, 2, 10, 0, 0));
 
         ModeleMLResponse reponse = mapperModele.versReponse(entite);
 
