@@ -104,7 +104,27 @@ public class DataSeeder implements CommandLineRunner {
                 dataset("LibriSpeech", "Enregistrements de lecture à voix haute transcrits",
                         "OpenSLR", 292000L, FormatDataset.AUDIO),
                 dataset("Web Traffic", "Séries temporelles de fréquentation de pages",
-                        "Interne au laboratoire", 145000L, FormatDataset.PARQUET)));
+                        "Interne au laboratoire", 145000L, FormatDataset.PARQUET),
+                dataset("SVHN", "Chiffres de plaques et façades captés dans Google Street View",
+                        "Stanford", 600000L, FormatDataset.IMAGES),
+                dataset("Wine Quality", "Analyses physico-chimiques et notes de qualité de vins",
+                        "UCI Machine Learning Repository", 4898L, FormatDataset.CSV),
+                dataset("Adult Census Income", "Données démographiques et tranche de revenu annuel",
+                        "UCI Machine Learning Repository", 48842L, FormatDataset.CSV),
+                dataset("SQuAD", "Questions-réponses extraites d'articles Wikipedia",
+                        "Stanford NLP", 100000L, FormatDataset.TEXTE),
+                dataset("COCO", "Images annotées d'objets du quotidien en contexte",
+                        "Microsoft", 330000L, FormatDataset.IMAGES),
+                dataset("UrbanSound8K", "Extraits sonores urbains classés par catégorie",
+                        "New York University", 8732L, FormatDataset.AUDIO),
+                dataset("Bike Sharing Demand", "Fréquentation horaire d'un service de vélos en libre-service",
+                        "UCI Machine Learning Repository", 17379L, FormatDataset.PARQUET),
+                dataset("Breast Cancer Wisconsin", "Mesures cellulaires pour le diagnostic de tumeurs",
+                        "UCI Machine Learning Repository", 569L, FormatDataset.CSV),
+                dataset("Journal des Requêtes API", "Historique structuré des appels a l'API interne",
+                        "Interne au laboratoire", 250000L, FormatDataset.JSON),
+                dataset("Sentiment140", "Tweets annotés en polarité de sentiment",
+                        "Stanford", 1600000L, FormatDataset.TEXTE)));
 
         List<ModeleML> modeles = depotModeles.saveAll(List.of(
                 modele("ResNet-50", TypeModele.VISION, "Réseau de neurones convolutif", "1.0"),
@@ -115,7 +135,20 @@ public class DataSeeder implements CommandLineRunner {
                 modele("K-Means", TypeModele.CLUSTERING, "K-Means", "1.0"),
                 modele("BERT", TypeModele.NLP, "Transformer bidirectionnel", "1.0"),
                 modele("ACP", TypeModele.REDUCTION_DIMENSION, "Analyse en composantes principales",
-                        "1.0")));
+                        "1.0"),
+                modele("LightGBM", TypeModele.CLASSIFICATION, "Gradient Boosting", "4.3"),
+                modele("DBSCAN", TypeModele.CLUSTERING, "Partitionnement par densité", "1.0"),
+                modele("GPT-2", TypeModele.NLP, "Transformer génératif", "1.0"),
+                modele("U-Net", TypeModele.VISION, "Réseau convolutif de segmentation", "1.0"),
+                modele("Régression logistique", TypeModele.CLASSIFICATION, "Modèle linéaire généralisé",
+                        "1.0"),
+                modele("ARIMA", TypeModele.REGRESSION, "Modèle de série temporelle", "1.0"),
+                modele("t-SNE", TypeModele.REDUCTION_DIMENSION, "Réduction de dimension non linéaire",
+                        "1.0"),
+                modele("Machine à vecteurs de support", TypeModele.CLASSIFICATION,
+                        "Séparateurs à vaste marge", "1.0"),
+                modele("YOLOv8", TypeModele.VISION, "Détection d'objets en temps réel", "8.0"),
+                modele("Word2Vec", TypeModele.NLP, "Plongement lexical", "1.0")));
 
         // Le jeu de demonstration est identique a chaque installation, ce qui rend
         // les captures d'ecran et la demonstration reproductibles.
@@ -124,7 +157,11 @@ public class DataSeeder implements CommandLineRunner {
 
         for (int index = 0; index < 24; index++) {
             Dataset dataset = datasets.get(index % datasets.size());
-            ModeleML modele = modeles.get((index * 3) % modeles.size());
+            // Multiplicateur premier avec la taille de la liste (18 = 2 x 3 x 3) pour garantir
+            // que les 24 iterations couvrent bien les 18 modeles sans en laisser aucun a zero
+            // experimentation : 3 ne convenait plus des que la liste est passee de 8 a 18 modeles
+            // (3 et 18 ne sont pas premiers entre eux), contrairement a 3 et 8.
+            ModeleML modele = modeles.get((index * 5) % modeles.size());
 
             double accuracy = arrondir(0.62 + tirage.nextDouble() * 0.36);
             double f1Score = arrondir(Math.max(0d, accuracy - tirage.nextDouble() * 0.06));

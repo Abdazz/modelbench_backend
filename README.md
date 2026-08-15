@@ -15,7 +15,7 @@ Swagger reste accessible **sans connexion**.
 ## Prerequis
 
 - Java 21
-- Maven, via le wrapper `./mvnw` fourni, aucune installation requise
+- Maven, via le wrapper `./mvnw` fourni.
 - PostgreSQL 14 ou superieur, **uniquement** pour le profil par defaut
 
 ## Demarrage le plus rapide, sans aucune base a installer
@@ -25,7 +25,7 @@ Swagger reste accessible **sans connexion**.
 ```
 
 L'application demarre sur le port 8090 avec une base H2 en memoire, remplie automatiquement de
-8 datasets, 8 modeles et 24 experimentations.
+18 datasets, 18 modeles et 24 experimentations.
 
 ## Demarrage avec PostgreSQL
 
